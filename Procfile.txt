@@ -1,3 +1,1 @@
-web: gunicorn onlineexam.wsgi
-
-web: gunicorn onlineexam.exam
+web: python manage.py runserver 0.0.0.0:$PORT --noreload
