@@ -1,0 +1,79 @@
+{%extends "base.html"%}
+{%load static%}
+{%block content%}
+<header>
+    <section class="">
+        <div class="container" >
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2">
+                    <h4 class="section-heading"></h4>
+                    <div>
+<h3 style="color:blue;text-align: center;">{{ name }}</h3> <br>
+<h4 style="text-align: center;">Total Time:{{duration.0}}:{{duration.1}}:{{duration.2}}</h4>
+<h4 style="text-align: center;" id="countdown"></h4>
+
+</div><br><br>
+                    <hr class="light">
+                   <div class="row">
+                   <div class="col-md-8 col-md-offset-2" style="background-color:white;margin-bottom:10px;">
+                   <form action="/{{exmid}}/submit/" method="post" id="qstinfrm">
+    {% csrf_token %}
+    {% for questions in exam %}
+        <p style="color: black">{{ forloop.counter }}. {{ questions.question_text }}</p>
+        <div style="color: black">
+        <input type="radio" name="{{ questions.id }}" id="{{ questions.id }}1" value="1" />
+        <label for="{{ questions.id }}1">{{ questions.option1 }}</label><br />
+        <input type="radio" name="{{ questions.id }}" id="{{ questions.id }}2" value="2" />
+        <label for="{{ questions.id }}2">{{ questions.option2 }}</label><br />
+        <input type="radio" name="{{ questions.id }}" id="{{ questions.id }}3" value="3" />
+        <label for="{{ questions.id }}3">{{ questions.option3 }}</label><br />
+        <input type="radio" name="{{ questions.id }}" id="{{ questions.id }}4" value="4" />
+        <label for="{{ questions.id }}4">{{ questions.option4 }}</label><br />
+        </div>
+        <hr>
+    {% endfor %}
+    <input type="submit" value="Submit" class="btn btn-danger center-block"/>
+</form>
+            </div></div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+</header>
+<script>
+function countdown( elementName, minutes, seconds )
+{
+    var element, endTime, hours, mins, msLeft, time;
+
+    function twoDigits( n )
+    {
+        return (n <= 9 ? "0" + n : n);
+    }
+
+    function updateTimer()
+    {
+        msLeft = endTime - (+new Date);
+        if ( msLeft < 1000 ) {
+            //element.innerHTML = "countdown's over!";
+            alert("time over")
+            $("#qstinfrm").submit();
+
+        } else {
+            time = new Date( msLeft );
+            hours = time.getUTCHours();
+            mins = time.getUTCMinutes();
+            element.innerHTML = (hours ? hours + ':' + twoDigits( mins ) : mins) + ':' + twoDigits( time.getUTCSeconds() );
+            setTimeout( updateTimer, time.getUTCMilliseconds() + 500 );
+        }
+    }
+
+    element = document.getElementById( elementName );
+    endTime = (+new Date) + 1000 * (60*minutes + seconds) + 500;
+    updateTimer();
+}
+
+countdown( "countdown", {{total_min}}, {{sec}});
+
+</script>
+{%endblock%}

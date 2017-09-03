@@ -1,0 +1,106 @@
+{%extends "base.html"%}
+{%load static%}
+{%block content%}
+<header>
+    <section class="">
+        <div class="container" >
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2">
+                    <h4 class="section-heading">{{name}} paper</h4>
+                    <hr class="light">
+                        <div class="row">
+                            <div class="col-md-10 col-md-offset-1" style="background-color:white;margin-bottom:10px;">
+                                
+                                <!-- <h4 style="color:black;text-align: center;">{{name}} Paper</h4> -->
+                                <div style="font-size: 16px;padding-top: 50px;">
+                                <div style="text-align: left;color: black;float: left;margin-left: 20px;">Total Time:{{duration.0}}:{{duration.1}}:{{duration.2}}</div>
+                                <div style="text-align: right;color: black;margin-right:50px;" id="countdown"></div>
+                               
+                               </div>
+                               <hr>
+                               <div style="margin-left: 20px;">
+                                    <form action="/{{exmid}}/submit/" method="post" id="qstinfrm">
+                                        {% csrf_token %}
+                                        {% for questions in exam %}
+                                            <h4 style="color: black;text-align: left;">  {{ forloop.counter }}. {{   questions.question_text }}
+                                            </h4>        
+                                            <div style="color: black;margin-left: 20px;">
+                                                <p style="text-align:left"><input type="radio" name="{{ questions.id }}" id="{{ questions.id }}1" value="1" />
+                                                <label for="{{ questions.id }}1">{{ questions.option1 }}</label></p >
+
+                                                <p style="text-align:left"><input type="radio" name="{{ questions.id }}" id="{{ questions.id }}2" value="2" />
+                                                <label for="{{ questions.id }}2">{{ questions.option2 }}</label></p>
+
+                                                <p style="text-align:left"><input type="radio" name="{{ questions.id }}" id="{{ questions.id }}3" value="3" />
+                                                <label for="{{ questions.id }}3">{{ questions.option3 }}</label></p>
+
+                                                <p style="text-align:left"><input type="radio" name="{{ questions.id }}" id="{{ questions.id }}4" value="4" />
+                                                <label for="{{ questions.id }}4">{{ questions.option4 }}</label></p><br />
+        </div>
+        <!-- <hr> -->
+    {% endfor %}
+    <input type="submit" value="Submit" style="margin-bottom: 40px;" class="btn btn-info center-block"/>
+</form>
+                               </div>
+
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</header>
+<script>
+function countdown( elementName, minutes, seconds )
+{
+    var element, endTime, hours, mins, msLeft, time;
+
+    function twoDigits( n )
+    {
+        return (n <= 9 ? "0" + n : n);
+    }
+
+    function updateTimer()
+    {
+        msLeft = endTime - (+new Date);
+        if ( msLeft < 1000 ) {
+            //element.innerHTML = "countdown's over!";
+            alert("time over")
+            $("#qstinfrm").submit();
+
+        } else {
+            time = new Date( msLeft );
+            hours = time.getUTCHours();
+            mins = time.getUTCMinutes();
+            element.innerHTML = (hours ? hours + ':' + twoDigits( mins ) : mins) + ':' + twoDigits( time.getUTCSeconds() );
+            setTimeout( updateTimer, time.getUTCMilliseconds() + 500 );
+        }
+    }
+
+    element = document.getElementById( elementName );
+    endTime = (+new Date) + 1000 * (60*minutes + seconds) + 500;
+    updateTimer();
+}
+
+countdown( "countdown", {{total_min}}, {{sec}});
+
+</script>
+
+{% block extracss %}
+<style>
+hr {
+    border-color: #F05F40;
+    border-width: 3px;
+    max-width: 361px;
+}
+
+p{
+    font-size: 15px;
+    margin-bottom: 0px;
+    line-height: 12px;
+}
+</style>
+        {% endblock %}
+
+
+{%endblock%}

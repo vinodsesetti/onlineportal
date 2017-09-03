@@ -1,0 +1,89 @@
+{%extends "base.html"%}
+{%load static%}
+{%block content%}
+<header>
+    <section class="">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 text-center">
+                    <h4 class="section-heading">Create Exam</h4>
+                    <hr class="light">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <form name="sentMessage" method="POST" id="createexam" enctype="multipart/form-data" novalidate >
+                                {% csrf_token %}
+                                    <div class="row">
+                            <div class="col-md-2"></div>
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" placeholder="Exam Name *" id="exam_name" required data-validation-required-m_essage="Please enter your name." name="exam_name">
+                                    <p class="help-block text-danger">{{form.exam_name.errors}}</p>
+                                </div>
+
+                                <div class="form-group">
+                                    <input type="text" class="form-control" placeholder="Date *" id="datepicker-13" required data-validation-required-message="Please enter your name." name="date">
+                                    <p class="help-block text-danger">{{form.date.errors}}</p>
+                                </div>
+
+                                <div class="form-group">
+                                    <input type="text" class="form-control" placeholder="Duration*" id="name" required data-validation-required-message="Please enter your name." name="duration">
+                                    <p class="help-block text-danger">{{form.duration.errors}}</p>
+                                </div>
+
+                                <div>
+                                    <div class="form-group" >
+                                        <select name="branch">
+                                            <option value="ece">ECE</option>
+                                            <option value="cse">CSE</option>
+                                            <option value="eee">EEE</option>
+                                            <option value="mech">Mech</option>
+                                            <option value="civil">Civil</option>
+                                        </select>
+                                        <p class="help-block text-danger">{{form.branch.errors}}</p>
+                                    </div>    
+                                </div>
+
+                                <div>
+                                    <input type="file"  placeholder="Upload File *" id="name" required data-validation-required-message="Please enter your name." name="uploadFile">
+                                    <p class="help-block text-danger">{{form.uploadFile.errors}}</p>
+                                </div>
+                               
+                                <div class="clearfix"></div>
+                                <div class="col-lg-12 text-center" style="margin-top: 20px;">
+                                    <div id="success"></div>
+                                    <button type="submit" class="btn btn-xl" style="color:black">Create Exam</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</header>
+
+{% block extrajs %}
+<script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+    <script>
+         $(function() 
+            {
+           
+                $("#datepicker-13").datepicker({minDate: 0,dateFormat: 'dd-mm-yy'});
+            });
+    </script>
+        {% endblock %}
+
+{% block extracss %}
+<link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+         rel = "stylesheet">
+<style type="text/css">
+select{
+    color: #473d3d;
+    width: 100%;
+    height: 35px;
+}
+</style>         
+        {% endblock %}
+{%endblock%}

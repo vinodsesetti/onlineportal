@@ -1,0 +1,63 @@
+{%extends "base.html"%}
+{%load static%}
+{%block content%}
+<header>
+    <section class="">
+        <div class="container" >
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2">
+                    <h4 class="section-heading">Student Profile</h4>
+                        <hr class="light">
+                            <div class="row">
+                                <div class="col-md-8 col-md-offset-2" style="background-color:white;margin-bottom:10px;">
+                                    <p style="color:black;margin-top:15px;">{{user.username}}</p>
+                                        <table style="width:100%;margin-bottom: 35px">
+                                            <tr>
+                                                <td rowspan="4" style="width:150px">
+                                                    <img src="https://cdn0.iconfinder.com/data/icons/PRACTIKA/256/user.png" style="width:100px;height:100px;margin-left:25px;">
+                                                </td>
+                                                <td>
+                                                    <span style="font-weight:bold;margin-left:30px;">Email:</span>
+                                                    <span style="margin-left:20px;">{{user.email}}</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <span style="font-weight:bold;margin-left:30px;">Mobile:</span>
+                                                    <span style="margin-left:10px;">{{user.number}}</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <span style="font-weight:bold;margin-left:30px;">Branch:</span>
+                                                    <span style="margin-left:10px;">{{user.branch}}</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <span style="font-weight:bold;margin-left:30px;">Year:</span>
+                                                    <span style="margin-left:25px;">{{user.year}}</span>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+</header>
+
+{% block extracss %}
+<style>
+td,tr {
+    border: 1px solid black;
+    border-collapse: collapse;
+    color: black;
+    margin-bottom: 20px;
+    height: 35px;
+    text-align: left;
+}
+</style>
+        {% endblock %}
+{%endblock%}
