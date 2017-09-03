@@ -42,8 +42,8 @@ def Login(request):
             username = request.POST['username']
             password = request.POST['password']
             user = authenticate(username=username, password=password)
-            print '*************'
-            print user
+            #print  '*************'
+            #print  user
             if user:
                 auth_login(request, user)
                 return HttpResponseRedirect('/Profile')
@@ -56,7 +56,7 @@ import csv
 def CreateExam(request):
     if request.method=='POST':
         form=CreateExamForm(request.POST, request.FILES)
-        # print (form)
+        # #print  (form)
         if form.is_valid():
             file=request.FILES.get('uploadFile')
             exam_name=request.POST.get('exam_name')
@@ -64,8 +64,8 @@ def CreateExam(request):
             date=parse(date)
             date=date.strftime('%Y-%m-%d')
             duration=request.POST.get('duration')
-            # print (duration)
-            # print (type(duration))
+            # #print  (duration)
+            # #print  (type(duration))
             branch=request.POST.get('branch')
             exam=Exam.objects.create(exam_name=exam_name,duration=timedelta(minutes=int(duration)),date_published=date,branch=branch)
             exam.save()
@@ -117,12 +117,12 @@ def forget_password(request):
             user=Profile.objects.get(email=email)
             if user:
                 random=uuid.uuid4().hex[:7].upper()
-                # print (random)
+                # #print  (random)
                 user.set_password(random)
                 user.save()
                 username=user.username
                 body="this email gives information about user details .if you want to change password ,you can change with below password. 'username:%s,password:%s'"%(username,random)
-                # print (body)
+                # #print  (body)
                 Subject="Your Login details"
                 email_send = EmailMessage(Subject,body,to=[email])
                 email_send.send()
@@ -136,14 +136,14 @@ def forget_password(request):
     return render(request,"forget_password.html",{'form':form})
 
 def profile(request):
-    # print (request.user.id)
+    # #print  (request.user.id)
     user=Profile.objects.get(id=request.user.id)
-    # print (user)
+    # #print  (user)
     return render(request,"profile.html",{"user":user})
 
 def exams_list(request):
     exam_list = Exam.objects.all().order_by('date_published')
-    # print (exam_list)
+    # #print  (exam_list)
     return render(request,"exams.html",{"exam_list":exam_list})
 
 def exam_detail(request, exam_id):
@@ -154,16 +154,16 @@ def exam_detail(request, exam_id):
     duration = str(exam_info.duration).split(":")
     total_min=(duration[0]*60)+duration[1]
     sec = duration[2]
-    # print (exam)    
+    # #print  (exam)    
     return render(request, 'questionpaper.html', {'exam': exam,
         'name':exam_name,'exmid':exam_id,'duration':duration,
         "total_min":total_min,"sec":sec
         })
 
 def submits(request, exam_id):
-    print request.user.username
-    print request.user.branch
-    print request.user.year
+    #print  request.user.username
+    #print  request.user.branch
+    #print  request.user.year
 
     exam = get_object_or_404(Exam, pk=exam_id)
     score = 0
@@ -172,24 +172,24 @@ def submits(request, exam_id):
     questions_data=[]
     for question in questions:
         if request.POST.get(str(question.pk)):
-            # print (request.POST.get(str(questions.pk)))
+            # #print  (request.POST.get(str(questions.pk)))
             response = request.POST.get(str(question.pk))
             if response:
-                print (response,"questions")
-                # print (str(questions),"answer")
+                #print  (response,"questions")
+                # #print  (str(questions),"answer")
                 if str(question.answer) == str(response):
                     score += 1
-                print (question.question_text)
+                #print  (question.question_text)
                 questions_data.append({'question':question,'choice':response})
         else:
-            print ("no options")
+            #print  ("no options")
             questions_data.append({'question':question,'choice':"you did not provide any option "})
             # your_choice.update({question.id:response})
-    # print (questions_data)
+    # #print  (questions_data)
 
-    # print (score)
+    # #print  (score)
     Report.objects.create(user=request.user, exam=exam, marks=score)
     Results.objects.create(name=request.user.username,marks=score,year=request.user.year,branch=request.user.branch)
-    # print ("LLLLLLLLLLLl")
+    # #print  ("LLLLLLLLLLLl")
     return render(request, 'submit.html', {'score': score, 'count': count,'questions_data':questions_data})
 
